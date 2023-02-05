@@ -1,0 +1,46 @@
+server:
+  port: 9193
+  servlet.contextPath: /customers
+spring.application.name: data-pipeline-customers 
+
+spring:
+  cloud:
+    function:
+      definition: processRawCustomer;
+    stream:
+      kafka:
+        streams:
+          bindings:
+            processRawCustomer-in-0:
+              consumer:
+                valueSerde: io.confluent.kafka.streams.serdes.avro.SpecificAvroSerde
+
+          binder:
+            brokers:
+            - 172.16.0.9
+            configuration:
+              schema.registry.url: http://172.16.0.9:8081
+            function:
+              processRawCustomer:
+                application-id: data-pipeline-customers-test-3
+      bindings:
+        processRawCustomer-in-0:
+          destination: java-memory-pixel-customers
+        processRawCustomer-out-0:
+          destination: java-memory-pixel-curated-customers       
+                
+
+
+---
+# spring.cloud.stream.kafka.streams.default.consumer.valueSerde: io.confluent.kafka.streams.serdes.avro.SpecificAvroSerde
+
+#org.apache.kafka.common.serialization.Serdes$StringSerde
+
+
+
+
+
+
+
+ 
+                 
